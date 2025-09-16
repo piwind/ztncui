@@ -92,10 +92,11 @@ exports.network_list = async function(req, res) {
 
 // Display detail page for specific network
 exports.network_detail = async function(req, res) {
+  const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
   const navigate =
     {
       active: 'networks',
-      whence: '/controller/networks'
+      whence: basePath + '/controller/networks'
     }
 
   try {
@@ -144,7 +145,8 @@ exports.network_create_post = async function(req, res) {
   } else {
     try {
       const network = await zt.network_create(name);
-      res.redirect('/controller/network/' + network.nwid);
+      const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
+      res.redirect(basePath + '/controller/network/' + network.nwid);
     } catch (err) {
       res.render('network_detail', {title: 'Create Network - error', navigate: navigate, error: 'Error creating network ' + name.name});
     }
@@ -153,10 +155,11 @@ exports.network_create_post = async function(req, res) {
 
 // Display Network delete form on GET
 exports.network_delete_get = async function(req, res) {
+  const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
   const navigate =
     {
       active: 'networks',
-      whence: '/controller/networks'
+      whence: basePath + '/controller/networks'
     }
 
   try {
@@ -170,10 +173,11 @@ exports.network_delete_get = async function(req, res) {
 
 // Handle Network delete on POST
 exports.network_delete_post = async function(req, res) {
+  const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
   const navigate =
     {
       active: 'networks',
-      whence: '/controller/networks'
+      whence: basePath + '/controller/networks'
     }
 
   try {
@@ -194,7 +198,8 @@ exports.network_object = async function(req, res) {
 
   try {
     const network = await zt.network_detail(req.params.nwid);
-    navigate.whence = '/controller/network/' + network.nwid;
+    const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
+    navigate.whence = basePath + '/controller/network/' + network.nwid;
     res.render(req.params.object, {title: req.params.object, navigate: navigate, network: network}, function(err, html) {
       if (err) {
         if (err.message.indexOf('Failed to lookup view') !== -1 ) {
@@ -211,10 +216,11 @@ exports.network_object = async function(req, res) {
 
 // Handle Network rename form on POST
 exports.name = async function(req, res) {
+  const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
   const navigate =
     {
       active: 'networks',
-      whence: '/controller/networks'
+      whence: basePath + '/controller/networks'
     }
 
   req.checkBody('name', 'Network name required').notEmpty();
@@ -234,7 +240,7 @@ exports.name = async function(req, res) {
       console.error("Error renaming network " + req.params.nwid, err);
     }
   }
-  res.redirect('/controller/network/' + req.params.nwid);
+  res.redirect(basePath + '/controller/network/' + req.params.nwid);
 };
 
 // ipAssignmentPools POST
@@ -265,7 +271,8 @@ exports.ipAssignmentPools = async function(req, res) {
   if (errors) {
     try {
       const network = await zt.network_detail(req.params.nwid);
-      navigate.whence = '/controller/network/' + network.nwid;
+      const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
+      navigate.whence = basePath + '/controller/network/' + network.nwid;
       res.render('ipAssignmentPools', {title: 'ipAssignmentPools', navigate: navigate, ipAssignmentPool: ipAssignmentPool, network: network, errors: errors});
     } catch (err) {
       res.render('ipAssignmentPools', {title: 'ipAssignmentPools', navigate: navigate, error: 'Error resolving network detail for network ' + req.params.nwid + ': ' + err});
@@ -340,7 +347,8 @@ exports.routes = async function (req, res) {
   } else {
     try {
       const network = await zt.routes(req.params.nwid, route, 'add');
-      navigate.whence = '/controller/network/' + network.nwid;
+      const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
+      navigate.whence = basePath + '/controller/network/' + network.nwid;
       res.render('routes', {title: 'routes', navigate: navigate, route: route, network: network});
     } catch (err) {
       res.render('routes', {title: 'routes', navigate: navigate, error: 'Error adding route for network ' + req.params.nwid + ': ' + err});
@@ -366,7 +374,8 @@ exports.route_delete = async function (req, res) {
 
   try {
     const network = await zt.routes(req.params.nwid, route, 'delete');
-    navigate.whence = '/controller/network/' + network.nwid;
+    const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
+    navigate.whence = basePath + '/controller/network/' + network.nwid;
     res.render('routes', {title: 'routes', navigate: navigate, route: route, network: network});
   } catch (err) {
     res.render('routes', {title: 'routes', navigate: navigate, error: 'Error deleting route for network ' + req.params.nwid + ': ' + err});
@@ -390,7 +399,8 @@ exports.ipAssignmentPool_delete = async function (req, res) {
 
   try {
     const network = await zt.ipAssignmentPools(req.params.nwid, ipAssignmentPool, 'delete');
-    navigate.whence = '/controller/network/' + network.nwid;
+    const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
+    navigate.whence = basePath + '/controller/network/' + network.nwid;
     res.render('ipAssignmentPools', {title: 'ipAssignmentPools', navigate: navigate, ipAssignmentPool: ipAssignmentPool, network: network});
   } catch (err) {
     res.render('ipAssignmentPools', {title: 'ipAssignmentPools', navigate: navigate, error: 'Error deleting IP Assignment Pool for network ' + req.params.nwid + ': ' + err});
@@ -412,7 +422,8 @@ exports.private = async function (req, res) {
 
   try {
     const network = await zt.network_object(req.params.nwid, private);
-    navigate.whence = '/controller/network/' + network.nwid;
+    const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
+    navigate.whence = basePath + '/controller/network/' + network.nwid;
     res.render('private', {title: 'private', navigate: navigate, network: network});
   } catch (err) {
     res.render('private', {title: 'private', navigate: navigate, error: 'Error applying private for network ' + req.params.nwid + ': ' + err});
@@ -434,7 +445,8 @@ exports.v4AssignMode = async function (req, res) {
 
   try {
     const network = await zt.network_object(req.params.nwid, v4AssignMode);
-    navigate.whence = '/controller/network/' + network.nwid;
+    const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
+    navigate.whence = basePath + '/controller/network/' + network.nwid;
     res.render('v4AssignMode', {title: 'v4AssignMode', navigate: navigate, network: network});
   } catch (err) {
     res.render('v4AssignMode', {title: 'v4AssignMode', navigate: navigate, error: 'Error applying v4AssignMode for network ' + req.params.nwid + ': ' + err});
@@ -461,7 +473,8 @@ exports.v6AssignMode = async function (req, res) {
 
   try {
     const network = await zt.network_object(req.params.nwid, v6AssignMode);
-    navigate.whence = '/controller/network/' + network.nwid;
+    const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
+    navigate.whence = basePath + '/controller/network/' + network.nwid;
     res.render('v6AssignMode', {title: 'v6AssignMode', navigate: navigate, network: network});
   } catch (err) {
     res.render('v6AssignMode', {title: 'v6AssignMode', navigate: navigate, error: 'Error applying v6AssignMode for network ' + req.params.nwid + ': ' + err});
@@ -490,7 +503,8 @@ exports.dns = async function (req, res) {
 
   try {
     const network = await zt.network_object(req.params.nwid, dns);
-    navigate.whence = '/controller/network/' + network.nwid;
+    const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
+    navigate.whence = basePath + '/controller/network/' + network.nwid;
     res.render('dns', {title: 'dns', navigate: navigate, network: network});
   } catch (err) {
     res.render('dns', {title: 'dns', navigate: navigate, error: 'Error updating dns for network ' + req.params.nwid + ': ' + err});
@@ -507,7 +521,8 @@ exports.member_detail = async function(req, res) {
 
   try {
     const {network, member} = await get_network_member(req.params.nwid, req.params.id);
-    navigate.whence = '/controller/network/' + network.nwid + '#members';
+    const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
+    navigate.whence = basePath + '/controller/network/' + network.nwid + '#members';
     res.render('member_detail', {title: 'Network member detail', navigate: navigate, network: network, member: member});
   } catch (err) {
     console.error(err);
@@ -525,7 +540,8 @@ exports.member_object = async function(req, res) {
 
   try {
     const {network, member} = await get_network_member(req.params.nwid, req.params.id);
-    navigate.whence = '/controller/network/' + network.nwid + '#members';
+    const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
+    navigate.whence = basePath + '/controller/network/' + network.nwid + '#members';
     res.render(req.params.object, {title: req.params.object, navigate: navigate, network: network, member: member}, function(err, html) {
       if (err) {
         if (err.message.indexOf('Failed to lookup view') !== -1 ) {
@@ -542,10 +558,11 @@ exports.member_object = async function(req, res) {
 
 // Easy network setup GET
 exports.easy_get = async function(req, res) {
+  const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
   const navigate =
     {
       active: 'networks',
-      whence: '/controller/network/' + req.params.nwid
+      whence: basePath + '/controller/network/' + req.params.nwid
     }
 
   try {
@@ -558,10 +575,11 @@ exports.easy_get = async function(req, res) {
 
 // Easy network setup POST
 exports.easy_post = async function(req, res) {
+  const basePath2 = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
   const navigate =
     {
       active: 'networks',
-      whence: '/controller/networks'
+      whence: basePath2 + '/controller/networks'
     }
 
   req.checkBody('networkCIDR', 'Network address is required').notEmpty();
