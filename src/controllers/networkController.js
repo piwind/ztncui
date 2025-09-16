@@ -719,6 +719,14 @@ exports.members = async function(req, res) {
         }
       }
     }
+
+    // Respond based on validation result
+    if (errors) {
+      return res.status(400).json({ errors });
+    }
+
+    // No content needed for AJAX updates
+    return res.sendStatus(204);
   } else { // GET
     const basePath = getBasePath(req);
     res.redirect(basePath + "/controller/network/" + req.params.nwid + "#members");
