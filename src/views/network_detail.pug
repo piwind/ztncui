@@ -75,6 +75,18 @@ block net_content
         $('.text').on('change', function() {
           $.post(url, {'id': this.name, 'name': this.value});
         });
+        // Prevent form submit on Enter which would POST to the page URL
+        $('form').on('submit', function(e) {
+          e.preventDefault();
+          return false;
+        });
+        // If Enter is pressed inside the name input, prevent submit and trigger change
+        $('.text').on('keypress', function(e) {
+          if (e.which == 13) {
+            e.preventDefault();
+            $(this).blur();
+          }
+        });
       });
     h3#members Members (#{members.length})
     form(method='POST' action='')
@@ -154,7 +166,7 @@ block net_content
   each value, key in network
     .row(style='margin: 5px 0;')
       .col-sm-2
-        a(href= network.nwid + '/' + key) #{key}:
+        a(href= nwurl + '/' + key) #{key}:
       .col-sm-10
         +json_value(value)
 
