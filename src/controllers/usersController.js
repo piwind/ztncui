@@ -150,7 +150,8 @@ exports.user_create_post = async function(req, res) {
       active: 'create_user',
     }
 
-  res.redirect(307, '/users/' + req.body.username + '/password');
+  const basePath = (res && res.locals && res.locals.basePath) ? res.locals.basePath : '';
+  res.redirect(307, basePath + '/users/' + req.body.username + '/password');
 }
 
 exports.user_delete = async function(req, res) {
