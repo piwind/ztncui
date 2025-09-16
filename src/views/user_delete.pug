@@ -24,7 +24,7 @@ block users_content
     form(method='POST' action='')
       button.btn.btn-danger(type='submit', name='delete' value='delete') Delete #{user.name}
       = ' '
-      a.btn.btn-default(href='/users', name='cancel', role='button') Cancel
+      a.btn.btn-default(href=(basePath + '/users'), name='cancel', role='button') Cancel
 
   if errors
     ul

@@ -13,7 +13,8 @@ const router = express.Router();
 /** Redirect logged user to controler page */
 function guest_only(req, res, next) {
   if (req.session.user) {
-    res.redirect('/controller');
+    const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
+    res.redirect(basePath + '/controller');
   } else {
     next();
   }
@@ -26,7 +27,8 @@ router.get('/', guest_only, function(req, res, next) {
 
 router.get('/logout', function(req, res) {
   req.session.destroy(function() {
-    res.redirect('/');
+    const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
+    res.redirect(basePath + '/');
   });
 });
 
@@ -49,14 +51,18 @@ router.post('/login', async function(req, res) {
         req.session.user = user;
         req.session.success = 'Authenticated as ' + user.name;
         if (user.pass_set) {
-          res.redirect(req.query.redirect || '/controller');
+          const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
+          const redirectTarget = req.query.redirect || (basePath + '/controller');
+          res.redirect(redirectTarget);
         } else {
-          res.redirect('/users/' + user.name + '/password');
+          const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
+          res.redirect(basePath + '/users/' + user.name + '/password');
         }
       });
     } else {
       req.session.error = 'Authentication failed, please check your username and password.'
-      res.redirect('/login');
+      const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
+      res.redirect(basePath + '/login');
     }
   });
 });

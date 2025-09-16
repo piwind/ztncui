@@ -42,7 +42,8 @@ exports.restrict = function(req, res, next) {
   if (req.session.user) {
     next();
   } else {
+    const basePath = req.app && req.app.locals ? (req.app.locals.basePath || '') : '';
     req.session.error = 'Access denied!';
-    res.redirect('/login?redirect=' + encodeURIComponent(req.originalUrl));
+    res.redirect(basePath + '/login?redirect=' + encodeURIComponent(req.originalUrl));
   }
 }

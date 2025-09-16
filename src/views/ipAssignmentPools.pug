@@ -16,7 +16,7 @@ block net_content
           each ipAssignmentPool in network.ipAssignmentPools
             tr
               td(width='3%')
-                a(href='/controller/network/' + network.nwid + '/ipAssignmentPools/' + ipAssignmentPool.ipRangeStart + '/' + ipAssignmentPool.ipRangeEnd + '/delete')
+                a(href=(basePath + '/controller/network/' + network.nwid + '/ipAssignmentPools/' + ipAssignmentPool.ipRangeStart + '/' + ipAssignmentPool.ipRangeEnd + '/delete'))
                   i.glyphicon.glyphicon-trash
               td= ipAssignmentPool.ipRangeStart
               td= ipAssignmentPool.ipRangeEnd
@@ -25,7 +25,7 @@ block net_content
     .col-sm-12
       h3 Add new IP Assignment Pool:
 
-  form(method='POST' action='/controller/network/' + network.nwid + '/ipAssignmentPools')
+  form(method='POST' action=(basePath + '/controller/network/' + network.nwid + '/ipAssignmentPools'))
     .form-group.row
       .col-sm-2
         label(for='ipRangeStart') IP range start:
@@ -42,7 +42,7 @@ block net_content
       .col-sm-12
         button.btn.btn-primary(type='submit') Submit
         = ' '
-        a.btn.btn-default(href='/controller/network/' + network.nwid name='cancel' role='button') Cancel
+        a.btn.btn-default(href=(basePath + '/controller/network/' + network.nwid) name='cancel' role='button') Cancel
 
   if errors
     .row
