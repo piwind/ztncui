@@ -4,25 +4,27 @@ ztncui is a web user interface for a standalone [ZeroTier](https://zerotier.com)
 
 Screenshots can be seen at [key-networks.com/ztncui](https://key-networks.com/ztncui).
 
-Follow us on [![alt @key_networks on Twitter](https://i.imgur.com/wWzX9uB.png)](https://twitter.com/key_networks)
-
 ## About This Fork
-This repository is forked from `key-networks/ztncui` (`https://github.com/key-networks/ztncui`).
+This repository is forked from [key-networks/ztncui](https://github.com/key-networks/ztncui).
 
 This fork includes the following changes:
 
-- Base path support for reverse proxies (e.g., Nginx) via the `BASE_PATH` environment variable. The base path is applied consistently across redirects, `navigate.whence` handling, and all URLs in Pug templates.
-- Fix for a POST error that occurred when changing a member name.
+1. Added a `BASE_PATH` option to allow running the application behind reverse proxies (e.g., Nginx) with subdirectory support.
 
-Usage for base path:
+   Usage: Set the `BASE_PATH` environment variable (e.g., `/ztncui`) when running behind a reverse proxy.
 
-- Set `BASE_PATH` to the subpath (e.g., `/ztncui`) when running behind a reverse proxy. If not set, the application behaves as before (root path).
+   The basePath is applied consistently across: redirect, navigate.whence, URLs defined in pug templates.
 
-## Packages
-Instructions for installing on Linux from RPM or DEB packges are available at [key-networks.com/ztncui](https://key-networks.com/ztncui).
+2. Fixed a POST request error that occurred when updating a member’s name.
 
-## Docker Container Image
-See [https://github.com/key-networks/ztncui-aio](https://github.com/key-networks/ztncui-aio)
+Notes:
+
+- The "Create User" feature requires navigating to the "Users" page first.
+
+## Distributions
+
+- **Packages:** Instructions for installing on Linux from RPM or DEB packages are available at [key-networks.com/ztncui](https://key-networks.com/ztncui).
+- **Docker image:** For a Docker all-in-one container image, see [https://github.com/key-networks/ztncui-aio](https://github.com/key-networks/ztncui-aio).
 
 ## Getting Started
 
@@ -307,15 +309,3 @@ Note that editing of certain properties, such as rules and tags, has not been im
 #### Member detail
 On the network **detail** page and on the **members** page, if you click on the member ID, you will end up on the member detail page.
 
-## Feedback
-Please give us your feedback... good, bad or ugly.  Constructive criticism is welcomed.  Please use the contact form at [key-networks.com](https://key-networks.com/) - Thanks :)
-
-## Bug and Vulnerability Reporting
-Problems with ztncui can be reported using the GitHub issue tracking system.  Please use the contact form at [key-networks.com](https://key-networks.com/) to privately report potential vulnerabilities.  Thank you.
-
-## License
-The ztncui code is open source code, licensed under the GNU GPLv3, and is free to use on those terms. If you are interested in commercial licensing, please contact us via the contact form at [key-networks.com](https://key-networks.com) .
-
-## Thanks
-- @lideming for a rework and improvement of the network details page, adding DNS support, peer status/address/latency and other improvements.
-- @Koromix for a fix for incompatibility with ZeroTier 1.12.
