@@ -6,6 +6,18 @@ Screenshots can be seen at [key-networks.com/ztncui](https://key-networks.com/zt
 
 Follow us on [![alt @key_networks on Twitter](https://i.imgur.com/wWzX9uB.png)](https://twitter.com/key_networks)
 
+## About This Fork
+This repository is forked from `key-networks/ztncui` (`https://github.com/key-networks/ztncui`).
+
+This fork includes the following changes:
+
+- Base path support for reverse proxies (e.g., Nginx) via the `BASE_PATH` environment variable. The base path is applied consistently across redirects, `navigate.whence` handling, and all URLs in Pug templates.
+- Fix for a POST error that occurred when changing a member name.
+
+Usage for base path:
+
+- Set `BASE_PATH` to the subpath (e.g., `/ztncui`) when running behind a reverse proxy. If not set, the application behaves as before (root path).
+
 ## Packages
 Instructions for installing on Linux from RPM or DEB packges are available at [key-networks.com/ztncui](https://key-networks.com/ztncui).
 
